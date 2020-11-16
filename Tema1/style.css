@@ -1,0 +1,16 @@
+#titlu{
+    text-align: center;
+    font-size: 80px;
+}
+#culoare{
+    color: violet;
+}
+#ecran{
+    height: 600px;
+    width: 400px;
+    border: 1px solid black ;
+}
+#animal{
+    height: 200px;
+    width: 100px;
+}
