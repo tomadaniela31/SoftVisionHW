@@ -7,14 +7,10 @@
 }
 #ecran{
     height: 600px;
-    width: 300px;
+    width: 400px;
     border: 1px solid black ;
 }
 #animal{
     height: 200px;
     width: 100px;
-}
-#button{
-    font-style: italic;
-    background-color: blueviolet;
 }
