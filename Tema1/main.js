@@ -63,6 +63,7 @@ btn.onclick = function () {
     context.fillRect(x, x, 50, 50);
 }// eveniment : la apasarea butonului va aparea un patrat albastru cu dimensiunile 50x50 la coordonate random din canvas
 
+//daca se poate sa-mi dai o idee, deoarece nu arata imaginea cum trebuie, la forma ei 
 const mario = new Image();
 mario.src = './mario2.png';
 mario.height=280;
