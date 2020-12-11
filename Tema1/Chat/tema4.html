@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<head>
+    <script src="/socket.io/socket.io.js" type="module"></script>
+    <script src="js/mainChat.js" type="module"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="menu">
+        <div id="join-chat">
+            <input type='text' id="user-name-input" placeholder="Enter your name" />
+            <input type="color" id="text-color" value="#e66465">
+            <button id="join-chat-button">Join Chat</button>
+            <p id="user-name-missing" class="display-none">Please enter user name to join chat</p>
+        </div>
+    </div>
+    <div id="chat-container" class="display-none">
+        <div id="chat-messages">
+
+        </div>
+        <input type='text' id='message' placeholder="Your message" />
+
+        <button id='send-message-button'>Send!</button>
+        <br>
+        <button id='leave-chat-button'>Leave chat!</button>
+        <br>
+        <p id="nrOfFriends"></p>
+    </div>
+</body>
+
+</html>
