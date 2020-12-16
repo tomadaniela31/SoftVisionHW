@@ -3,6 +3,10 @@ const canvas = document.getElementById("game-canvas");
 /**@type {CanvasRenderingContext2D} */
 const context = canvas.getContext('2d');
 const socket = io();
+socket.on('menu',function(){
+    document.getElementById("menu").classList.remove('display-none');
+    document.getElementById("game-container").classList.add('display-none');
+})
 document.getElementById('create-game-button').addEventListener('click', function () {
     const input = document.getElementById('game-name-input');
     const gameName = input.value;
@@ -17,19 +21,31 @@ document.getElementById('create-game-button').addEventListener('click', function
 
 })
 
-socket.on('game-loop', function (objectsForDraw) {
+socket.on('game-loop', function (data) {
     document.getElementById('menu').classList.add('display-none');
-
+    document.getElementById('back-to-menu').classList.add('display-none');
     document.getElementById('game-container').classList.remove('display-none');
     context.drawImage(document.getElementById('map-image'), 0, 0);
 
-    objectsForDraw.forEach(function (objectsForDraw) {
+    data.objectsForDraw.forEach(function (objectsForDraw) {
         //console.log(objectsForDraw)
         context.drawImage(
             document.getElementById(objectsForDraw.imageId),
             ...objectsForDraw.drawImageParameters
         )
     })
+    if(data.gameInProgress){
+        document.getElementById('waiting-for-players').classList.add('display-none');
+        document.getElementById('score-container').classList.remove('display-none');
+        document.getElementById('space-ranger-score').innerHTML=data.score['space-ranger'];
+        document.getElementById('pink-lady-score').innerHTML=data.score['pink-lady'];
+        document.getElementById('diamonds-left').innerHTML=data.leftDiamonds;
+
+    }
+    else
+    {
+        document.getElementById('waiting-for-players').classList.remove('display-none');
+    }
 })
 document.addEventListener("keydown", function (event) {
     switch (event.key) {
@@ -53,10 +69,15 @@ document.addEventListener("keydown", function (event) {
                 socket.emit('start-moving-player', 'right');
                 break;
             }
+        case ' ':
+            {
+                socket.emit('attack');
+                break;
+            }
     }
 
 
-});
+})
 document.addEventListener('keyup', function (event) {
     switch (event.key) {
         case 'ArrowUp':
@@ -99,11 +120,20 @@ socket.on('remove-game-from-list', function (gameId) {
     document.getElementById(gameId).classList.add('display-none');
 })
 
-socket.on('game-over', function (reason) {
+socket.on('game-over', function (imageId,gameId) {
     const canvas = document.getElementById('game-canvas');
-    console.log('Game over', reason);
-    context.font = "80px Arial";
-    context.fillStyle = "red";
-    context.textAlign = "center";
-    context.fillText("Game Over", canvas.width / 2, canvas.height / 2);
+    //console.log('Game over', reason);
+    context.drawImage(document.getElementById(imageId), 0, 0);
+    document.getElementById('back-to-menu').classList.remove('display-none');
+    document.getElementById('back-to-menu').dataset.gameId=gameId;
+    document.getElementById('score-container').classList.add('display-none');
+})
+
+document.getElementById('back-to-menu').addEventListener('click', function() {
+    socket.emit('back-to-menu', document.getElementById('back-to-menu').dataset.gameId);
+}) 
+socket.on('show-game-container',function(){
+    document.getElementById('menu').classList.add('display-none');
+    document.getElementById('back-to-menu').classList.add('display-none');
+    document.getElementById('gane-container').classList.add('display-none');
 })
